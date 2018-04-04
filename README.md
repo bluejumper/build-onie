@@ -5,7 +5,7 @@ It also clarifies how Docker could be used in a build workflow.
 
 * It has not been tested yet. I will revisit this image upon a return to the ONIE build process.
 
-Docker allows you to package an entire Linux environment into units called containers. Containers utilise [https://en.wikipedia.org/wiki/Cgroups](control group), a resource isolation & management feature of the Linux kernel, to execute their processes with allowances specific to their control group.
+Docker allows you to package an entire Linux environment into units called containers. Containers utilise [control groups](https://en.wikipedia.org/wiki/Cgroups "Wikipedia Cgroups"), a resource isolation & management feature of the Linux kernel, to execute their processes with allowances specific to their control group.
 
 ## Steps (Container preparation)
 > The goal is to access a shell session as the 'build' user within the container environment.
@@ -34,6 +34,6 @@ Navigate into the build-config directory.
 
 ## Steps (To build)
 You are now follow a target's build steps from the ONIE repository.
-Please review the 'INSTALL' file within a directory you'll find [https://github.com/opencomputeproject/onie/tree/master/machine](here). 
+Please review the 'INSTALL' file within a directory you'll find [here](https://github.com/opencomputeproject/onie/tree/master/machine "onie/machines"). 
 * For a KVM build: `make -j2 MACHINE=kvm_x86_64 all recovery-iso`
 * For an Accton platform: `make -j4 MACHINEROOT=../machine/accton MACHINE=accton_as7816_64x all`
