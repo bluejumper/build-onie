@@ -29,8 +29,8 @@ As the build user, navigate to the build directory.
 Use Git to clone the [ONIE repository](https://github.com/opencomputeproject/onie "opencomputeproject/onie").
 * `git clone https://github.com/opencomputeproject/onie`
 
-Navigate into the build-config directory.
-* `cd ./build-config`
+Navigate through the repository to 'build-config'.
+* `cd ./onie/build-config`
 
 ## Steps (To build)
 You are now follow a target's build steps from the ONIE repository.
