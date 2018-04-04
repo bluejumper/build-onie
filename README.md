@@ -33,7 +33,7 @@ Navigate through the repository to 'build-config'.
 * `cd ./onie/build-config`
 
 ## Steps (To build)
-You are now follow a target's build steps from the ONIE repository.
+You can now follow a target's build steps from the ONIE repository.
 Please review the 'INSTALL' file within a directory you'll find [here](https://github.com/opencomputeproject/onie/tree/master/machine "onie/machines"). 
 * For a KVM build: `make -j2 MACHINE=kvm_x86_64 all recovery-iso`
 * For an Accton platform: `make -j4 MACHINEROOT=../machine/accton MACHINE=accton_as7816_64x all`
