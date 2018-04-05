@@ -1,34 +1,29 @@
 FROM debian:9
 
-# Compare with $(DEBIAN_BUILD_HOST_PACKAGES) variable from
-# onie/build-config/Makefile.
+# Install predependencies.
+RUN apt-get update && apt-get install -y apt-utils wget git
 
-RUN apt-get update && apt-get install -y \
-	build-essential stgit u-boot-tools util-linux \
-	gperf device-tree-compiler python-all-dev xorriso \
-	autoconf automake bison flex texinfo libtool libtool-bin \
-	realpath gawk libncurses5 libncurses5-dev bc \
-	dosfstools mtools pkg-config git wget help2man libexpat1 \
-	libexpat1-dev fakeroot python-sphinx rst2pdf \
-	libefivar-dev libnss3-tools libnss3-dev libpopt-dev \
-	libssl-dev sbsigntool uuid-runtime uuid-dev cpio \
-	curl bsdmainutils sudo
+# Get current Makefile from repository.
+# Isolate Dependencies.
+# Export as environment file.
+# apt install exported dependencies.
 
+RUN wget -qO- https://raw.githubusercontent.com/opencomputeproject/onie/master/build-config/Makefile | \
+	sed -n '/^DEBIAN_BUILD_HOST_PACKAGES/ { :feed H; n; /^$/!b feed; g; p }' | \
+	sed 's/DEBIAN_BUILD_HOST_PACKAGES.*\= /export DEBIAN_BUILD_HOST_PACKAGES=\x22/; s/\x09*//; s/\x0a*/\x0a/; /^$/d; $s/$/\x22/;' && \
+	apt-get install -y $DEBIAN_BUILD_HOST_PACKAGES
+	
 # Create build user
-
-RUN useradd -m -s /bin/bash build
-RUN adduser build sudo
-RUN echo "build:build" | chpasswd
-
-# Add /sbin and /usr/sbin to build user's path
-
-RUN echo export PATH="/sbin:/usr/sbin:$PATH" >> /home/build/.bashrc
+RUN useradd -m -s /bin/sh build  && \
+	adduser build sudo && \
+	echo "build:build" | chpasswd && \
+	echo export PATH="/sbin:/usr/sbin:$PATH" >> /home/build/.bashrc
 
 # Create /mnt/build as a mount point for sharing files with the host
 # system.
+RUN mkdir /mnt/build; chown build:build /mnt/build
 
-RUN mkdir /mnt/build && chown build:build /mnt/build
-
+# As the build user, navigate to the build directory.
 USER build
 
-CMD ["bash"]
+CMD ["/bin/sh"]
